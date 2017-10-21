@@ -82,29 +82,29 @@ function dataReceived(responseText){
 
   document.getElementById("counter").innerHTML = signedCount;
 
-  var view_map_button = document.getElementById("view_map_button");
-  view_map_button.onclick = function(){
-    showMap();
-  }
+  // var view_map_button = document.getElementById("view_map_button");
+  // view_map_button.onclick = function(){
+  //   showMap();
+  // }
 }
 
-function showMap(){
-  document.getElementById("petition_map").style.display = "block";
-  var view_map_button = document.getElementById("view_map_button");
-  view_map_button.innerHTML = "Hide Petition Map";
-  view_map_button.onclick = function(){
-    hideMap();
-  }
-}
-
-function hideMap(){
-  document.getElementById("petition_map").style.display = "none";
-  var view_map_button = document.getElementById("view_map_button");
-  view_map_button.innerHTML = "Show Petition Map";
-  view_map_button.onclick = function(){
-    showMap();
-  }
-}
+// function showMap(){
+//   document.getElementById("petition_map").style.display = "block";
+//   var view_map_button = document.getElementById("view_map_button");
+//   view_map_button.innerHTML = "Hide Petition Map";
+//   view_map_button.onclick = function(){
+//     hideMap();
+//   }
+// }
+//
+// function hideMap(){
+//   document.getElementById("petition_map").style.display = "none";
+//   var view_map_button = document.getElementById("view_map_button");
+//   view_map_button.innerHTML = "Show Petition Map";
+//   view_map_button.onclick = function(){
+//     showMap();
+//   }
+// }
 
 
 function displayLastRefresh(){
