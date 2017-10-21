@@ -109,3 +109,24 @@ body{
   cursor: pointer;
 
 }
+
+#all_petitions_list_cont{
+  width: 80%;
+  max-width: 1000px;
+  display: block;
+  margin: 0 auto;
+}
+
+.all_petitions_list_item{
+  margin: 0;
+  padding: 20px;
+  font-size: 17px;
+  border-bottom: 1px solid #212121;
+  background: #eee;
+  color: #212121;
+}
+
+.all_petitions_list_item:hover{
+  background: #212121;
+  color: #eee;
+}

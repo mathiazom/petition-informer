@@ -1,40 +1,33 @@
-function loadFromHTTP(url){
+function loadPetition(url){
 
   var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            dataReceived(xmlHttp.responseText);
+            PetitionDataReceived(xmlHttp.responseText);
     }
     xmlHttp.open("GET", url, true); // true for asynchronous
     xmlHttp.send(null);
 }
 
-function dataReceived(responseText){
+function PetitionDataReceived(responseText){
 
   json = JSON.parse(responseText);
 
   displayLastRefresh();
 
+  document.getElementById('all_petitions_list_cont').style.display = "none";
+
+  document.getElementById('single_petition').style.display = "block";
 
   // CHECK IF RESPONDED TO
   var govResponded = json.data.attributes.government_response != null;
   document.getElementById('response_txt_cont').innerHTML = "";
-
-  /* var responded_or_not = document.getElementById('response_msg');
-
-
-  var petition_title = document.createElement("p");
-  petition_title.className = "container";
-  petition_title.innerHTML = "<p>Petition title:</p><h3>" + json.data.attributes.action + "</h3>";
-  document.getElementById('response_txt_cont').appendChild(petition_title); */
 
   var petition_title = document.getElementById('response_msg');
   document.getElementById('response_msg').innerHTML = json.data.attributes.action;
 
   if(govResponded){
     document.body.style.background = "#009624"
-
-    //responded_or_not.innerHTML = "Government has responded!";
 
     var responded_or_not = document.createElement("p");
     responded_or_not.className = "container";
@@ -55,8 +48,6 @@ function dataReceived(responseText){
 
   }else{
     document.body.style.background = "#ba000d"
-
-    //responded_or_not.innerHTML = "Government has <ins>not</ins> responded yet";
 
     var responded_or_not = document.createElement("p");
     responded_or_not.className = "container";
@@ -126,19 +117,57 @@ function displayLastRefresh(){
   document.getElementById('latest_refresh').innerHTML = "Last Refresh: \n" + hours + ":" + minutes + ":" + seconds;
 }
 
-function init(){
-  url = prompt("Enter petition url:","https://petition.parliament.uk/petitions/202305");
+function loadAllPetitions(){
+  var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            AllPetitionsDataReceived(xmlHttp.responseText);
+    }
+    var url = "https://petition.parliament.uk/petitions.json";
+    xmlHttp.open("GET", url, true); // true for asynchronous
+    xmlHttp.send(null);
+}
 
-  if(url == null){
-    url = "https://petition.parliament.uk/petitions/202305";
+function AllPetitionsDataReceived(responseText){
+  var json = JSON.parse(responseText);
+  var list = json.data;
+  for(i=0;i<list.length;i++){
+    var item = list[i];
+    if(item.type == "petition"){
+      var el = document.createElement("p");
+      el.innerHTML = item.attributes.action + " <i> by " + item.attributes.creator_name + "</i>";
+      el.className = "all_petitions_list_item";
+        el.onclick = (function(i){
+          return function(){
+            var purl = list[i].links.self;
+            loadPetition(purl);
+            setInterval(function(){
+              loadPetition(purl);
+            },10000);
+          }
+        })(i);
+      document.getElementById('all_petitions_list_cont').appendChild(el);
+    }
+
   }
+}
 
-  url = url + ".json";
+function init(){
 
-  loadFromHTTP(url);
-  setInterval(function(){
-    loadFromHTTP(url);
-  },10000);
+  loadAllPetitions();
+
+  // url = prompt("Enter petition url:","https://petition.parliament.uk/petitions/202305");
+  //
+  // if(url == null){
+  //   url = "https://petition.parliament.uk/petitions/202305";
+  // }
+  //
+  // url = url + ".json";
+  //
+  // loadPetition(url);
+  // setInterval(function(){
+  //   loadPetition(url);
+  // },10000);
 }
 
 
