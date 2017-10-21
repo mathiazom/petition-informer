@@ -13,8 +13,6 @@ function dataReceived(responseText){
 
   json = JSON.parse(responseText);
 
-  console.log(json);
-
   displayLastRefresh();
 
 
