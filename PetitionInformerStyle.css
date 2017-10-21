@@ -1,0 +1,111 @@
+*{
+  font-family: 'Open Sans', sans-serif;
+  box-sizing: border-box;
+}
+
+body{
+  margin: 0;
+}
+
+#latest_refresh{
+  display: table;
+  margin: 0 auto;
+  font-size:10px;
+  text-align:right;
+  position:absolute;
+  top:0;
+  right:0;
+  padding:10px 20px;
+  color:#eee;
+  background: #212121;
+}
+
+#response_msg{
+  margin: 0;
+}
+
+.container{
+  display: table;
+  margin: 0 auto;
+  background: #eee;
+  padding: 30px 50px;
+  margin-bottom: 20px;
+  width: 800px;
+}
+
+#counter_cont{
+  background: #212121;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 800px) {
+    /* For mobile phones: */
+    .container{
+      width: auto;
+      min-width: 100%;
+      margin: 0 0 10px 0;
+      padding: 30px 20px;
+    }
+    #view_map_button{
+      display: none !important;
+    }
+    #petition_map{
+      display: none !important;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    /* For mobile phones: */
+    #latest_refresh{
+      position:inherit;
+      text-align: center;
+      margin: 10px auto 0 auto;
+    }
+}
+
+#counter{
+  color: white;
+  margin: 0;
+  font-weight: 300;
+  font-size: 25px;
+}
+
+#counter_desc{
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  margin: 0;
+  font-weight: 300;
+}
+
+.text_el{
+  text-align: center;
+  font-size: 35px;
+  font-weight: 300;
+}
+
+.para_el{
+  text-align: center;
+  font-size: 17px;
+  font-weight: 300;
+}
+
+.reg_text{
+  color: black;
+}
+
+#view_map_button{
+  display:table;
+  margin:0 auto 20px auto;
+  width:auto;
+  padding: 20px 30px;
+  text-align: center;
+}
+
+#view_map_button:hover{
+  background:#212121;
+  color:white;
+  cursor: pointer;
+
+}
