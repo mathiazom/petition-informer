@@ -23,7 +23,7 @@ function AllPetitionsDataReceived(responseText){
         el.onclick = (function(i){
           return function(){
             //var purl = list[i].links.self;
-            var purl = "/petition.html?p=" + list[i].id;
+            var purl = "/PetitionInformer/petition.html?p=" + list[i].id;
 
             window.location.href = purl;
 
