@@ -1,11 +1,15 @@
 init();
 
 function init(){
-  var purl = retrieveQueryURL("p");
-  if(purl == ""){
-    purl = "202305";
+  var pid = retrieveQueryURL("p");
+  if(pid == ""){
+    pid = "202305";
   }
-  loadPetition("https://petition.parliament.uk/petitions/" + purl + ".json");
+  purl = "https://petition.parliament.uk/petitions/" + pid + ".json";
+  loadPetition(purl);
+  setInterval(function(){
+     loadPetition(purl);
+  },10000);
 }
 
 function retrieveQueryURL(variable){

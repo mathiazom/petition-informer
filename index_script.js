@@ -18,7 +18,7 @@ function AllPetitionsDataReceived(responseText){
     var item = list[i];
     if(item.type == "petition"){
       var el = document.createElement("p");
-      el.innerHTML = item.attributes.action + " <i> by " + item.attributes.creator_name + "</i>";
+      el.innerHTML = "<b>" + item.attributes.action + "</b><br/> <p style='font-size:14px;margin-bottom:0;'><i> by " + item.attributes.creator_name + "</i></p>";
       el.className = "all_petitions_list_item";
         el.onclick = (function(i){
           return function(){
@@ -26,36 +26,28 @@ function AllPetitionsDataReceived(responseText){
             var purl = "/PetitionInformer/petition.html?p=" + list[i].id;
 
             window.location.href = purl;
-
-            // loadPetition(purl);
-            // setInterval(function(){
-            //   loadPetition(purl);
-            // },10000);
           }
         })(i);
+        if(item.attributes.government_response != null){
+           el.style.borderLeft = "5px solid red";
+         }else{
+           el.style.borderLeft = "5px solid green";
+         }
       document.getElementById('all_petitions_list_cont').appendChild(el);
+      // var mark = document.createElement("div");
+      // mark.style.height = "5px";
+      // if(item.attributes.government_response != null){
+      //   mark.style.background = "red";
+      // }else{
+      //   mark.style.background = "green";
+      // }
+      // document.getElementById('all_petitions_list_cont').appendChild(mark);
     }
 
   }
+
+  document.getElementById('loading_img').style.display = "none";
+  document.getElementById('main_div').style.display = "block";
 }
 
-function init(){
-
-  loadAllPetitions();
-
-  // url = prompt("Enter petition url:","https://petition.parliament.uk/petitions/202305");
-  //
-  // if(url == null){
-  //   url = "https://petition.parliament.uk/petitions/202305";
-  // }
-  //
-  // url = url + ".json";
-  //
-  // loadPetition(url);
-  // setInterval(function(){
-  //   loadPetition(url);
-  // },10000);
-}
-
-
-init();
+loadAllPetitions();

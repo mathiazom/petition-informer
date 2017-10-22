@@ -3,6 +3,31 @@
   box-sizing: border-box;
 }
 
+body{
+  margin: 0;
+}
+
+#header{
+  background: #0277bd;
+  text-align: center;
+  padding: 20px;
+}
+
+#header_title{
+  margin-bottom: 0;
+  color: #eee;
+}
+
+
+
+#header_subtitle{
+  margin-top: 10px;
+  color: #0277bd;
+  background: #eee;
+  display: inline-block;
+  padding: 5px 10px;
+}
+
 #all_petitions_list_cont{
   width: 80%;
   max-width: 1000px;
@@ -11,15 +36,53 @@
 }
 
 .all_petitions_list_item{
-  margin: 0;
-  padding: 20px;
+  margin: 10px 0;
+  padding: 30px 50px;
   font-size: 17px;
-  border-bottom: 1px solid #212121;
-  background: #eee;
   color: #212121;
+  background: #eee;
+}
+
+@media only screen and (max-width: 800px) {
+    /* For mobile phones: */
+    #all_petitions_list_cont{
+      width: 100%;
+    }
+    .all_petitions_list_item{
+      margin: 5px 0;
+      padding: 25px 30px;
+    }
 }
 
 .all_petitions_list_item:hover{
   background: #212121;
   color: #eee;
+}
+
+#footer{
+  margin-top: 70px;
+  background: #0277bd;
+  padding: 70px 20px;
+}
+
+.byline{
+  font-size: 15px;
+  margin: 10px;
+  color: #212121;
+  padding: 7px 20px;
+  background: #fff;
+  text-align: center;
+  display: table;
+  margin: 20px auto;
+}
+
+.byline:hover{
+  background: #212121;
+  color: #eee;
+  cursor: pointer;
+}
+
+.byline_a{
+  color: inherit;
+  text-decoration: none;
 }
