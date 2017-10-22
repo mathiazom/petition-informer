@@ -29,9 +29,9 @@ function AllPetitionsDataReceived(responseText){
           }
         })(i);
         if(item.attributes.government_response != null){
-           el.style.borderLeft = "5px solid red";
-         }else{
            el.style.borderLeft = "5px solid green";
+         }else{
+           el.style.borderLeft = "5px solid red";
          }
       document.getElementById('all_petitions_list_cont').appendChild(el);
       // var mark = document.createElement("div");
