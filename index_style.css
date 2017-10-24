@@ -7,18 +7,18 @@ body{
   margin: 0;
 }
 
-#header{
+header{
+  width: 100%;
   background: #0277bd;
   text-align: center;
   padding: 20px;
+  top: 0;
 }
 
 #header_title{
   margin-bottom: 0;
   color: #eee;
 }
-
-
 
 #header_subtitle{
   margin-top: 10px;
@@ -52,6 +52,12 @@ body{
       margin: 5px 0;
       padding: 25px 30px;
     }
+    #header_title{
+      font-size: 25px;
+    }
+    #header_subtitle{
+      font-size: 15px;
+    }
 }
 
 .all_petitions_list_item:hover{
@@ -59,7 +65,7 @@ body{
   color: #eee;
 }
 
-#footer{
+footer{
   margin-top: 70px;
   background: #0277bd;
   padding: 70px 20px;

@@ -1,4 +1,19 @@
+window.onscroll = function(){
+  isScrolledIntoView(document.getElementById("all_petitions_list_cont"));
+}
 
+function isScrolledIntoView(elem)
+{
+    if(window.pageYOffset > elem.offsetTop){
+      document.getElementsByTagName('header')[0].style.position = "fixed";
+      document.getElementById('header_subtitle').style.display = "none";
+      document.getElementById('header_title').style.marginTop = "0";
+    }else{
+      document.getElementsByTagName('header')[0].style.position = "static";
+      document.getElementById('header_subtitle').style.display = "inline-block";
+      document.getElementById('header_title').style.marginTop = "0.67em";
+    }
+}
 
 function loadAllPetitions(){
   var xmlHttp = new XMLHttpRequest();
