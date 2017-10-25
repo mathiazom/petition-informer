@@ -50,10 +50,6 @@ function PetitionDataReceived(responseText){
 
   displayLastRefresh();
 
-  //document.getElementById('all_petitions_list_cont').style.display = "none";
-
-  //document.getElementById('single_petition').style.display = "block";
-
   // CHECK IF RESPONDED TO
   var govResponded = json.data.attributes.government_response != null;
   document.getElementById('response_txt_cont').innerHTML = "";
@@ -79,6 +75,16 @@ function PetitionDataReceived(responseText){
     response_details.innerHTML = "<b>Response in full: </b> <br/><br/>" + json.data.attributes.government_response.details;
     document.getElementById('response_txt_cont').appendChild(response_details);
 
+    var background = document.createElement("p");
+    background.className = "container";
+    background.innerHTML = "<b>Background: </b>" + json.data.attributes.background;
+    document.getElementById('response_txt_cont').appendChild(background);
+
+    var details = document.createElement("p");
+    details.className = "container";
+    details.innerHTML = "<b>Additional details: </b>" + json.data.attributes.additional_details;
+    document.getElementById('response_txt_cont').appendChild(details);
+
 
 
   }else{
@@ -89,15 +95,15 @@ function PetitionDataReceived(responseText){
     responded_or_not.innerHTML = "<b>Status:</b> Government has <ins>not</ins> responded yet";
     document.getElementById('response_txt_cont').appendChild(responded_or_not);
 
-    var details = document.createElement("p");
-    details.className = "container";
-    details.innerHTML = "<b>Additional details: </b>" + json.data.attributes.additional_details;
-    document.getElementById('response_txt_cont').appendChild(details);
-
     var background = document.createElement("p");
     background.className = "container";
     background.innerHTML = "<b>Background: </b>" + json.data.attributes.background;
     document.getElementById('response_txt_cont').appendChild(background);
+
+    var details = document.createElement("p");
+    details.className = "container";
+    details.innerHTML = "<b>Additional details: </b>" + json.data.attributes.additional_details;
+    document.getElementById('response_txt_cont').appendChild(details);
 
   }
 
@@ -105,6 +111,26 @@ function PetitionDataReceived(responseText){
   var signedCount = json.data.attributes.signature_count;
 
   document.getElementById("counter").innerHTML = signedCount;
+
+  var singatures_by_country = document.createElement("p");
+  singatures_by_country.className = "container";
+  singatures_by_country.innerHTML = "<b>Singatures by country:</b><br/><br/>";
+
+  var signatures_by_country_list = json.data.attributes.signatures_by_country;
+  signatures_by_country_list.sort(function(a,b){
+    return b.signature_count - a.signature_count;
+  });
+  var c_count_list = [];
+  for(var c = 0;c<signatures_by_country_list.length;c++){
+    var country = signatures_by_country_list[c];
+    var c_name = country.name;
+    var c_code = country.code;
+    var c_count = country.signature_count;
+    c_count_list.push(c_count);
+    singatures_by_country.innerHTML += c_name + " (" + c_code + ") - " + c_count + "<br/><br/>";
+  }
+
+  document.getElementById('response_txt_cont').appendChild(singatures_by_country);
 
   // var view_map_button = document.getElementById("view_map_button");
   // view_map_button.onclick = function(){
