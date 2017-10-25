@@ -7,17 +7,44 @@ body{
   margin: 0;
 }
 
-header{
+#menu_svg {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  display: inline;
+}
+
+#header{
   width: 100%;
   background: #0277bd;
   text-align: center;
   padding: 20px;
   top: 0;
+  position: relative;
+}
+
+#header_min{
+  width: 100%;
+  background: #0277bd;
+  text-align: center;
+  padding: 10px;
+  top: 0;
+  position: fixed;
+  display: none;
 }
 
 #header_title{
   margin-bottom: 0;
   color: #eee;
+  font-weight: 300;
+}
+
+#header_title_min{
+  padding: 0px;
+  color: #eee;
+  font-size: 15px;
+  font-weight: 300;
+  margin: 10px 0;
 }
 
 #header_subtitle{
@@ -43,6 +70,22 @@ header{
   background: #eee;
 }
 
+.all_petitions_list_item_p{
+  font-size: 14px;
+}
+
+#go_to_page_top{
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #0277bd;
+  border-radius: 50%;
+  padding: 12px;
+  width: 45px;
+  height: auto;
+  display: none;
+}
+
 @media only screen and (max-width: 800px) {
     /* For mobile phones: */
     #all_petitions_list_cont{
@@ -51,12 +94,19 @@ header{
     .all_petitions_list_item{
       margin: 5px 0;
       padding: 25px 30px;
+      font-size: 15px;
+    }
+    .all_petitions_list_item_p{
+      font-size: 12px;
     }
     #header_title{
-      font-size: 25px;
+      font-size: 20px;
     }
     #header_subtitle{
-      font-size: 15px;
+      font-size: 12px;
+    }
+    header{
+      padding: 10px;
     }
 }
 
