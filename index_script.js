@@ -76,7 +76,7 @@ function AllPetitionsDataReceived(responseText){
         el.onclick = (function(i){
           return function(){
             //var purl = list[i].links.self;
-            var purl = "/PetitionInformer/petition.html?p=" + list[i].id;
+            var purl = window.location.href + "/petition.html?p=" + list[i].id;
 
             window.location.href = purl;
           }
