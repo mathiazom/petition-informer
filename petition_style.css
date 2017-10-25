@@ -14,45 +14,37 @@ body{
   display: inline;
 }
 
-#header{
+#go_back_header{
   width: 100%;
   background: #0277bd;
   text-align: center;
-  padding: 20px;
   top: 0;
   position: relative;
 }
 
-#header_min{
-  width: 100%;
-  background: #0277bd;
-  text-align: center;
-  padding: 10px;
-  top: 0;
-  position: fixed;
-  display: none;
-}
-
-#header_title{
-  margin-bottom: 0;
+#go_back_title{
+  padding: 15px;
+  display: table;
+  font-size: 20px;
+  text-align: left;
+  margin: 0;
   color: #eee;
   font-weight: 300;
 }
 
-#header_title_min{
-  padding: 0px;
-  color: #eee;
-  font-size: 15px;
-  font-weight: 300;
-  margin: 10px 0;
-}
-
-#header_subtitle{
-  margin-top: 10px;
-  color: #0277bd;
+#go_back_title:hover{
   background: #eee;
-  display: inline-block;
-  padding: 5px 10px;
+  color: #0277bd;
+  cursor: pointer;
+}
+
+#go_back_title:hover img{
+  color: #0277bd;
+}
+
+#go_back_svg{
+  width: 20px;
+  height: auto;
 }
 
 #latest_refresh{
@@ -100,6 +92,18 @@ body{
     }
     #petition_map{
       display: none !important;
+    }
+    #go_back_title{
+      padding: 10px;
+      display: table;
+      font-size: 17px;
+      text-align: left;
+      margin: 0;
+      color: #eee;
+      font-weight: 300;
+    }
+    #go_back_svg{
+      width: 17px;
     }
 }
 

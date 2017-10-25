@@ -1,4 +1,6 @@
-init();
+window.onload = function(){
+  init();
+}
 
 function init(){
   var pid = retrieveQueryURL("p");
@@ -10,6 +12,12 @@ function init(){
   setInterval(function(){
      loadPetition(purl);
   },10000);
+
+  var go_back_button = document.getElementById('go_back_title')
+  go_back_button.onclick = function(){
+    console.log("test click");
+    window.location.href = "index.html";
+  }
 }
 
 function retrieveQueryURL(variable){

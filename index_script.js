@@ -76,7 +76,7 @@ function AllPetitionsDataReceived(responseText){
         el.onclick = (function(i){
           return function(){
             //var purl = list[i].links.self;
-            var purl = window.location.href + "/petition.html?p=" + list[i].id;
+            var purl = "petition.html?p=" + list[i].id;
 
             window.location.href = purl;
           }
@@ -87,14 +87,6 @@ function AllPetitionsDataReceived(responseText){
            el.style.borderLeft = "5px solid red";
          }
       document.getElementById('all_petitions_list_cont').appendChild(el);
-      // var mark = document.createElement("div");
-      // mark.style.height = "5px";
-      // if(item.attributes.government_response != null){
-      //   mark.style.background = "red";
-      // }else{
-      //   mark.style.background = "green";
-      // }
-      // document.getElementById('all_petitions_list_cont').appendChild(mark);
     }
 
   }
