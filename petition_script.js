@@ -1,10 +1,22 @@
 var full_response_visible = false;
 
 window.onload = function(){
-  var purl = retrieveQueryURL();
-  if(purl == "null"){
-    window.location.href = "index.html";
+  // RETRIEVE PETITION FROM URL
+  var variable = "p"
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for(var i=0;i<vars.length;i++){
+    var pair = vars[i].split("=");
+    if(pair[0] == variable){
+      if(pair[1] == ""){
+        window.location.href = "index.html";
+      }
+      var purl = "https://petition.parliament.uk/petitions/" + pair[1] + ".json";
+    }else{
+      window.location.href = "index.html";
+    }
   }
+
   loadPetition(purl);
   setInterval(function(){
      loadPetition(purl);
@@ -16,25 +28,7 @@ window.onload = function(){
   }
 }
 
-function retrieveQueryURL(){
-  var variable = "p"
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for(var i=0;i<vars.length;i++){
-    var pair = vars[i].split("=");
-    if(pair[0] == variable){
-      if(pair[1] == ""){
-        return "null";
-      }
-      var purl = "https://petition.parliament.uk/petitions/" + pair[1] + ".json";
-      return purl;
-    }
-    return "null";
-  }
-}
-
 function loadPetition(url){
-
   var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4){
@@ -47,7 +41,6 @@ function loadPetition(url){
     }
     xmlHttp.open("GET", url, true); // true for asynchronous
     xmlHttp.send(null);
-
 }
 
 function PetitionDataReceived(responseText){
@@ -58,37 +51,47 @@ function PetitionDataReceived(responseText){
 
   var mainCont = document.getElementById('main_petition_cont');
 
+  // GET SIGNED COUNT
+  var total_count = json.data.attributes.signature_count;
+  document.getElementById("counter").innerHTML = total_count;
+
   // CHECK IF RESPONDED TO
   var govResponded = json.data.attributes.government_response != null;
   mainCont.innerHTML = "";
 
+  // TITLE
   var petition_title = document.getElementById('petition_title');
   petition_title.innerHTML = json.data.attributes.action;
 
+  // GO TO TOP BUTTON
   var go_to_page_top = document.getElementById('go_to_page_top');
 
   if(govResponded){
-    document.body.style.background = "#009624"
+    mainCont.style.background = "#009624"
     go_to_page_top.src = "ico/ic_expand_less_green_24px.svg";
     go_to_page_top.style.color = "#009624";
 
-    var responded_or_not = document.createElement("p");
-    responded_or_not.className = "container";
-    responded_or_not.innerHTML = "<b>Status:</b> Government has responded!";
-    mainCont.appendChild(responded_or_not);
+    // STATUS
+    var status = document.createElement("p");
+    status.className = "container";
+    status.innerHTML = "<b>Status:</b> Government has responded!";
+    mainCont.appendChild(status);
 
+    // SUMMARY
     var response_summary = document.createElement("p");
     response_summary.id = "response_summary";
     response_summary.className = "container";
     response_summary.innerHTML = "<b>Summary of response:</b> <br/><br/>" + json.data.attributes.government_response.summary + "<br/><br/> <button id=show_full_response onclick=showFullResponse()><b>Show full</b></button>";
     mainCont.appendChild(response_summary);
 
+    // DETAILS
     var response_details = document.createElement("p");
     response_details.style.display = "none";
     response_details.className = "container";
     response_details.innerHTML = "<b>Response in full: </b> <br/><br/>" + json.data.attributes.government_response.details;
     mainCont.appendChild(response_details);
 
+    // SHOW FULL RESPONSE
     var show_full_response = document.getElementById('show_full_response');
     if(full_response_visible){
       show_full_response.innerHTML = "Hide full";
@@ -106,26 +109,9 @@ function PetitionDataReceived(responseText){
           full_response_visible = true;
         }
     }
-    // var response_details = document.createElement("p");
-    // response_details.className = "container";
-    // response_details.innerHTML = "<b>Response in full: </b> <br/><br/>" + json.data.attributes.government_response.details;
-    // mainCont.appendChild(response_details);
-
-    var background = document.createElement("p");
-    background.className = "container";
-    background.innerHTML = "<b>Background: </b>" + json.data.attributes.background;
-    mainCont.appendChild(background);
-
-    var details = document.createElement("p");
-    details.className = "container";
-    details.innerHTML = "<b>Additional details: </b>" + json.data.attributes.additional_details;
-    mainCont.appendChild(details);
-
-
-
   }
   else{
-    document.body.style.background = "#ba000d"
+    mainCont.style.background = "#ba000d"
     go_to_page_top.src = "ico/ic_expand_less_red_24px.svg";
     go_to_page_top.style.color = "#ba000d";
 
@@ -134,70 +120,96 @@ function PetitionDataReceived(responseText){
     responded_or_not.innerHTML = "<b>Status:</b> Government has <ins>not</ins> responded yet";
     mainCont.appendChild(responded_or_not);
 
-    var background = document.createElement("p");
-    background.className = "container";
-    background.innerHTML = "<b>Background: </b>" + json.data.attributes.background;
-    mainCont.appendChild(background);
-
-    var details = document.createElement("p");
-    details.className = "container";
-    details.innerHTML = "<b>Additional details: </b>" + json.data.attributes.additional_details;
-    mainCont.appendChild(details);
-
   }
 
-  // GET SIGNED COUNT
-  document.getElementById("counter").innerHTML = json.data.attributes.signature_count;
+  // BACKGROUND
+  var background = document.createElement("p");
+  background.className = "container";
+  background.innerHTML = "<b>Background: </b><br/><br/>" + json.data.attributes.background;
+  mainCont.appendChild(background);
+
+  // DETAILS
+  var details = document.createElement("p");
+  details.className = "container";
+  details.innerHTML = "<b>Additional details: </b><br/><br/>" + json.data.attributes.additional_details;
+  mainCont.appendChild(details);
 
   // SIGNATURES BY COUNTRY TABLE
   var signatures_by_country_table = document.createElement("table");
   signatures_by_country_table.className = "container";
   signatures_by_country_table.id = "c_table";
-  var signatures_by_country_header = document.createElement("tr");
 
-  // COUNTRY NAME CELL
-  var c_name_td = document.createElement("td");
-  c_name_td.className = "c_data_cell";
-  c_name_td.innerHTML = "<b>Country</b>";
-  signatures_by_country_header.appendChild(c_name_td);
+    // ROW HEADERS
+    var signatures_by_country_header = document.createElement("tr");
+    signatures_by_country_header.innerHTML =
+    "<td class=c_data_cell><b>Country</b></td>" +
+    "<td class=c_data_cell><b>Signatures</b></td>";
+    signatures_by_country_table.appendChild(signatures_by_country_header);
 
-  // COUNTRY SIGNATURES COUNT CELL
-  var c_count_td = document.createElement("td");
-  c_count_td.className = "c_data_cell";
-  c_count_td.innerHTML = "<b>Signatures</b>";
-  signatures_by_country_header.appendChild(c_count_td);
+    // LIST SORTED BY SIGNATURE COUNT
+    var signatures_by_country_list = json.data.attributes.signatures_by_country;
+    signatures_by_country_list.sort(function(a,b){
+      return b.signature_count - a.signature_count;
+    });
 
-  signatures_by_country_table.appendChild(signatures_by_country_header);
+    // COUNTRY ROWS
+    for(var c = 0;c<signatures_by_country_list.length;c++){
+      var country = signatures_by_country_list[c];
 
-  var signatures_by_country_list = json.data.attributes.signatures_by_country;
-  signatures_by_country_list.sort(function(a,b){
-    return b.signature_count - a.signature_count;
-  });
+      // COUNTRY ROW
+      var c_row = document.createElement("tr");
+      if(c%2 == 0){
+        c_row.style.background = "#ddd";
+      }
 
-  for(var c = 0;c<signatures_by_country_list.length;c++){
-    var country = signatures_by_country_list[c];
+      // PROGRESS BAR
+      var prog = document.createElement("progress");
+      prog.style.width = "100%";
+      prog.max = 100;
+      var val = (country.signature_count/total_count)*100;
+      console.log(val);
+      prog.value = val;
 
-    // COUNTRY ROW
-    var c_row = document.createElement("tr");
-    if(c%2 == 0){
-      c_row.style.background = "#ddd";
+      // COUNTRY NAME CELL
+      var c_name_td = document.createElement("td");
+      c_name_td.className = "c_data_cell";
+      var id = "red";
+      if(govResponded){
+        id = "green";
+      }
+      c_name_td.innerHTML = (c+1) + ". " + country.name + " (" + country.code + ")<br/>";
+      c_row.appendChild(c_name_td);
+
+      // COUNTRY SIGNATURES CELL
+      var c_count_td = document.createElement("td");
+      c_count_td.className = "c_data_cell";
+      var percent = Number(Math.round(val+'e2')+'e-2');
+      if(percent < 0.01){
+        percent = "< 0.01";
+      }
+      c_count_td.innerHTML = country.signature_count + " (" + percent + "%)";
+
+      c_row.appendChild(c_count_td);
+
+      var prog = document.createElement("progress");
+      prog.id = id + "_prog";
+      prog.max = 100;
+      prog.value = val;
+      prog.style.width = "100%";
+
+      var prog_tr = document.createElement("tr");
+      var prog_td = document.createElement("td");
+      prog_td.colSpan = 2;
+      prog_td.style.padding = "0";
+      prog_td.appendChild(prog);
+      prog_tr.appendChild(prog_td);
+
+      // ADD ROW TO TABLE
+      signatures_by_country_table.appendChild(c_row);
+      signatures_by_country_table.appendChild(prog_td);
+
+
     }
-
-    // COUNTRY NAME CELL
-    var c_name_td = document.createElement("td");
-    c_name_td.className = "c_data_cell";
-    c_name_td.innerHTML = country.name + " (" + country.code + ")";
-    c_row.appendChild(c_name_td);
-
-    // COUNTRY SIGNATURES COUNT CELL
-    var c_count_td = document.createElement("td");
-    c_count_td.className = "c_data_cell";
-    c_count_td.innerHTML = country.signature_count;
-    c_row.appendChild(c_count_td);
-
-    // ADD ROW TO TABLE
-    signatures_by_country_table.appendChild(c_row);
-  }
 
   // INSERT TABLE
   mainCont.appendChild(signatures_by_country_table);

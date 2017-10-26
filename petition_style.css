@@ -84,7 +84,10 @@ body{
 #counter_cont{
   background: #212121;
   padding: 20px;
-  margin-bottom: 20px;
+}
+
+#main_petition_cont{
+  padding: 20px 0;
 }
 
 @media only screen and (max-width: 800px) {
@@ -224,3 +227,21 @@ body{
   from {opacity: 0;}
   to {opacity: 1;}
 }
+
+progress{
+  margin: 0;
+  padding: 0;
+  height: 5px;
+}
+
+progress#red_prog::-webkit-progress-value { background-color: red;}
+
+progress#red_prog::-moz-progress-bar { background-color: red; }
+
+progress#red_prog { background-color: red; }
+
+progress#green_prog::-webkit-progress-value { background-color: green;}
+
+progress#green_prog::-moz-progress-bar { background-color: green; }
+
+progress#green_prog { background-color: green; }
