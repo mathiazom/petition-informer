@@ -7,6 +7,30 @@ body{
   margin: 0;
 }
 
+#loading{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+#loading_p{
+  margin: 0 auto;
+  text-align:center;
+  background:#0277bd;
+  color:#eee;
+  display:table;
+  padding:10px 20px;
+}
+
+#loading_img{
+  margin: 0 auto;
+  display:block;
+  width:25%;
+  height:auto;
+}
+
 #menu_svg {
   position: absolute;
   left: 20px;
@@ -126,10 +150,15 @@ nav a:hover{
   width: 45px;
   height: auto;
   display: none;
+  -webkit-animation: fadeIn 0.5s;
+  animation: fadeIn 0.5s;
 }
 
 @media only screen and (max-width: 800px) {
     /* For mobile phones: */
+    #loading_img{
+      width: 50%;
+    }
     #all_petitions_list_cont{
       width: 100%;
     }

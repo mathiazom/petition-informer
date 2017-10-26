@@ -96,7 +96,7 @@ function AllPetitionsDataReceived(responseText){
 
   }
 
-  document.getElementById('loading_img').style.display = "none";
+  document.getElementById('loading').style.display = "none";
   document.getElementById('main_div').style.display = "block";
 }
 
