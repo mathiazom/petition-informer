@@ -14,23 +14,15 @@ body{
   display: inline;
 }
 
+/* HEADER MIN */
+
 #header{
   width: 100%;
   background: #0277bd;
   text-align: center;
-  padding: 20px;
+  padding: 15px;
   top: 0;
   position: relative;
-}
-
-#header_min{
-  width: 100%;
-  background: #0277bd;
-  text-align: center;
-  padding: 10px;
-  top: 0;
-  position: fixed;
-  display: none;
 }
 
 #header_title{
@@ -39,20 +31,70 @@ body{
   font-weight: 300;
 }
 
-#header_title_min{
-  padding: 0px;
-  color: #eee;
-  font-size: 15px;
-  font-weight: 300;
-  margin: 10px 0;
-}
-
 #header_subtitle{
   margin-top: 10px;
   color: #0277bd;
   background: #eee;
   display: inline-block;
   padding: 5px 10px;
+}
+
+nav a {
+  margin-top: 20px;
+  padding: 5px 10px;
+  color: rgba(238,238,238,0.8);
+  text-decoration: none;
+  font-weight: 300;
+}
+
+nav a:hover{
+  color: #0277bd;
+  background: #eee;
+}
+
+/* HEADER MOBILE */
+
+#header_mobile{
+  display: none;
+  position: relative;
+  width: 100%;
+  background: #0277bd;
+  text-align: center;
+  padding: 10px;
+}
+
+/* HEADER MIN */
+
+#header_min{
+  width: 100%;
+  background: #0277bd;
+  -webkit-animation: fadeIn 0.2s;
+  animation: fadeIn 0.2s;
+  text-align: center;
+  padding: 10px;
+  top: 0;
+  position: fixed;
+  display: none;
+}
+
+@-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+#header_title_min{
+  display: inline-block;
+  padding: 5px 10px;
+  color: #0277bd;
+  background: #eee;
+  font-size: 15px;
+  font-weight: 300;
+  margin: 10px 0;
 }
 
 #all_petitions_list_cont{
@@ -99,14 +141,17 @@ body{
     .all_petitions_list_item_p{
       font-size: 12px;
     }
-    #header_title{
-      font-size: 20px;
+    #header{
+      display: none;
     }
-    #header_subtitle{
-      font-size: 12px;
+    #header_min{
+      display: block;
     }
     header{
       padding: 10px;
+    }
+    #header_mobile{
+      display: inline-block;
     }
 }
 
@@ -141,4 +186,9 @@ footer{
 .byline_a{
   color: inherit;
   text-decoration: none;
+}
+
+hr {
+  border: 1px solid rgba(238,238,238,0.2);
+  margin: 20px 0;
 }

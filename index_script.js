@@ -8,8 +8,9 @@ function isScrolledIntoView(elem)
     var header_min = document.getElementById('header_min');
     var go_to_page_top = document.getElementById('go_to_page_top');
 
+    var isMobile = window.innerWidth < 800;
+
     if(window.pageYOffset > elem.offsetTop){
-      header.style.display="none";
       header_min.style.display="inline-block";
 
       var go_to_page_top = document.getElementById('go_to_page_top');
@@ -45,7 +46,11 @@ function isScrolledIntoView(elem)
         },0);
       };
 
-    }else{
+    }else if(isMobile){
+      header.style.display="none";
+      go_to_page_top.style.display = "none";
+    }
+    else{
       header.style.display="inline-block";
       header_min.style.display="none";
       go_to_page_top.style.display = "none";
@@ -95,4 +100,6 @@ function AllPetitionsDataReceived(responseText){
   document.getElementById('main_div').style.display = "block";
 }
 
-loadAllPetitions();
+window.onload = function(){
+  loadAllPetitions();
+}
