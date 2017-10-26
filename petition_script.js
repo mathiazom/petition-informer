@@ -1,13 +1,10 @@
-window.onload = function(){
-  init();
-}
+var full_response_visible = false;
 
-function init(){
-  var pid = retrieveQueryURL("p");
-  if(pid == ""){
-    pid = "202305";
+window.onload = function(){
+  var purl = retrieveQueryURL();
+  if(purl == "null"){
+    window.location.href = "index.html";
   }
-  purl = "https://petition.parliament.uk/petitions/" + pid + ".json";
   loadPetition(purl);
   setInterval(function(){
      loadPetition(purl);
@@ -15,33 +12,42 @@ function init(){
 
   var go_back_button = document.getElementById('go_back_title')
   go_back_button.onclick = function(){
-    console.log("test click");
     window.location.href = "index.html";
   }
 }
 
-function retrieveQueryURL(variable){
+function retrieveQueryURL(){
+  var variable = "p"
   var query = window.location.search.substring(1);
   var vars = query.split("&");
   for(var i=0;i<vars.length;i++){
     var pair = vars[i].split("=");
     if(pair[0] == variable){
-      return pair[1];
+      if(pair[1] == ""){
+        return "null";
+      }
+      var purl = "https://petition.parliament.uk/petitions/" + pair[1] + ".json";
+      return purl;
     }
-    return false;
+    return "null";
   }
-  console.log(query);
 }
 
 function loadPetition(url){
 
   var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+        if (xmlHttp.readyState == 4){
+          if(xmlHttp.status == 200){
             PetitionDataReceived(xmlHttp.responseText);
+          }else if(xmlHttp.status == 0){
+            window.location.href = "index.html";
+          }
+        }
     }
     xmlHttp.open("GET", url, true); // true for asynchronous
     xmlHttp.send(null);
+
 }
 
 function PetitionDataReceived(responseText){
@@ -50,87 +56,151 @@ function PetitionDataReceived(responseText){
 
   displayLastRefresh();
 
+  var mainCont = document.getElementById('main_petition_cont');
+
   // CHECK IF RESPONDED TO
   var govResponded = json.data.attributes.government_response != null;
-  document.getElementById('response_txt_cont').innerHTML = "";
+  mainCont.innerHTML = "";
 
-  var petition_title = document.getElementById('response_msg');
-  document.getElementById('response_msg').innerHTML = json.data.attributes.action;
+  var petition_title = document.getElementById('petition_title');
+  petition_title.innerHTML = json.data.attributes.action;
+
+  var go_to_page_top = document.getElementById('go_to_page_top');
 
   if(govResponded){
     document.body.style.background = "#009624"
+    go_to_page_top.src = "ico/ic_expand_less_green_24px.svg";
+    go_to_page_top.style.color = "#009624";
 
     var responded_or_not = document.createElement("p");
     responded_or_not.className = "container";
-    responded_or_not.innerHTML = "Status: Government has responded!";
-    document.getElementById('response_txt_cont').appendChild(responded_or_not);
+    responded_or_not.innerHTML = "<b>Status:</b> Government has responded!";
+    mainCont.appendChild(responded_or_not);
 
     var response_summary = document.createElement("p");
+    response_summary.id = "response_summary";
     response_summary.className = "container";
-    response_summary.innerHTML = "<b>Summary of response:</b> <br/><br/>" + json.data.attributes.government_response.summary;
-    document.getElementById('response_txt_cont').appendChild(response_summary);
+    response_summary.innerHTML = "<b>Summary of response:</b> <br/><br/>" + json.data.attributes.government_response.summary + "<br/><br/> <button id=show_full_response onclick=showFullResponse()><b>Show full</b></button>";
+    mainCont.appendChild(response_summary);
 
     var response_details = document.createElement("p");
+    response_details.style.display = "none";
     response_details.className = "container";
     response_details.innerHTML = "<b>Response in full: </b> <br/><br/>" + json.data.attributes.government_response.details;
-    document.getElementById('response_txt_cont').appendChild(response_details);
+    mainCont.appendChild(response_details);
+
+    var show_full_response = document.getElementById('show_full_response');
+    if(full_response_visible){
+      show_full_response.innerHTML = "Hide full";
+      response_details.style.display = "block";
+      full_response_visible = true;
+    }
+    show_full_response.onclick = function(){
+        if(response_details.style.display == "block"){
+          show_full_response.innerHTML = "Show full";
+          response_details.style.display = "none";
+          full_response_visible = false;
+        }else{
+          show_full_response.innerHTML = "Hide full";
+          response_details.style.display = "block";
+          full_response_visible = true;
+        }
+    }
+    // var response_details = document.createElement("p");
+    // response_details.className = "container";
+    // response_details.innerHTML = "<b>Response in full: </b> <br/><br/>" + json.data.attributes.government_response.details;
+    // mainCont.appendChild(response_details);
 
     var background = document.createElement("p");
     background.className = "container";
     background.innerHTML = "<b>Background: </b>" + json.data.attributes.background;
-    document.getElementById('response_txt_cont').appendChild(background);
+    mainCont.appendChild(background);
 
     var details = document.createElement("p");
     details.className = "container";
     details.innerHTML = "<b>Additional details: </b>" + json.data.attributes.additional_details;
-    document.getElementById('response_txt_cont').appendChild(details);
+    mainCont.appendChild(details);
 
 
 
-  }else{
+  }
+  else{
     document.body.style.background = "#ba000d"
+    go_to_page_top.src = "ico/ic_expand_less_red_24px.svg";
+    go_to_page_top.style.color = "#ba000d";
 
     var responded_or_not = document.createElement("p");
     responded_or_not.className = "container";
     responded_or_not.innerHTML = "<b>Status:</b> Government has <ins>not</ins> responded yet";
-    document.getElementById('response_txt_cont').appendChild(responded_or_not);
+    mainCont.appendChild(responded_or_not);
 
     var background = document.createElement("p");
     background.className = "container";
     background.innerHTML = "<b>Background: </b>" + json.data.attributes.background;
-    document.getElementById('response_txt_cont').appendChild(background);
+    mainCont.appendChild(background);
 
     var details = document.createElement("p");
     details.className = "container";
     details.innerHTML = "<b>Additional details: </b>" + json.data.attributes.additional_details;
-    document.getElementById('response_txt_cont').appendChild(details);
+    mainCont.appendChild(details);
 
   }
 
   // GET SIGNED COUNT
-  var signedCount = json.data.attributes.signature_count;
+  document.getElementById("counter").innerHTML = json.data.attributes.signature_count;
 
-  document.getElementById("counter").innerHTML = signedCount;
+  // SIGNATURES BY COUNTRY TABLE
+  var signatures_by_country_table = document.createElement("table");
+  signatures_by_country_table.className = "container";
+  signatures_by_country_table.id = "c_table";
+  var signatures_by_country_header = document.createElement("tr");
 
-  var singatures_by_country = document.createElement("p");
-  singatures_by_country.className = "container";
-  singatures_by_country.innerHTML = "<b>Singatures by country:</b><br/><br/>";
+  // COUNTRY NAME CELL
+  var c_name_td = document.createElement("td");
+  c_name_td.className = "c_data_cell";
+  c_name_td.innerHTML = "<b>Country</b>";
+  signatures_by_country_header.appendChild(c_name_td);
+
+  // COUNTRY SIGNATURES COUNT CELL
+  var c_count_td = document.createElement("td");
+  c_count_td.className = "c_data_cell";
+  c_count_td.innerHTML = "<b>Signatures</b>";
+  signatures_by_country_header.appendChild(c_count_td);
+
+  signatures_by_country_table.appendChild(signatures_by_country_header);
 
   var signatures_by_country_list = json.data.attributes.signatures_by_country;
   signatures_by_country_list.sort(function(a,b){
     return b.signature_count - a.signature_count;
   });
-  var c_count_list = [];
+
   for(var c = 0;c<signatures_by_country_list.length;c++){
     var country = signatures_by_country_list[c];
-    var c_name = country.name;
-    var c_code = country.code;
-    var c_count = country.signature_count;
-    c_count_list.push(c_count);
-    singatures_by_country.innerHTML += c_name + " (" + c_code + ") - " + c_count + "<br/><br/>";
+
+    // COUNTRY ROW
+    var c_row = document.createElement("tr");
+    if(c%2 == 0){
+      c_row.style.background = "#ddd";
+    }
+
+    // COUNTRY NAME CELL
+    var c_name_td = document.createElement("td");
+    c_name_td.className = "c_data_cell";
+    c_name_td.innerHTML = country.name + " (" + country.code + ")";
+    c_row.appendChild(c_name_td);
+
+    // COUNTRY SIGNATURES COUNT CELL
+    var c_count_td = document.createElement("td");
+    c_count_td.className = "c_data_cell";
+    c_count_td.innerHTML = country.signature_count;
+    c_row.appendChild(c_count_td);
+
+    // ADD ROW TO TABLE
+    signatures_by_country_table.appendChild(c_row);
   }
 
-  document.getElementById('response_txt_cont').appendChild(singatures_by_country);
+  // INSERT TABLE
+  mainCont.appendChild(signatures_by_country_table);
 
   // var view_map_button = document.getElementById("view_map_button");
   // view_map_button.onclick = function(){
@@ -156,7 +226,6 @@ function PetitionDataReceived(responseText){
 //   }
 // }
 
-
 function displayLastRefresh(){
   var now = new Date();
 
@@ -176,4 +245,45 @@ function displayLastRefresh(){
   }
 
   document.getElementById('latest_refresh').innerHTML = "Last Refresh: \n" + hours + ":" + minutes + ":" + seconds;
+}
+
+window.onscroll = function(){
+    var elem = document.getElementById("single_petition");
+    var go_to_page_top = document.getElementById('go_to_page_top');
+
+    var isMobile = window.innerWidth < 800;
+
+    if(window.pageYOffset > elem.offsetTop){
+
+      var go_to_page_top = document.getElementById('go_to_page_top');
+
+      go_to_page_top.style.display = "block";
+
+      var footer = document.getElementsByTagName('footer')[0];
+
+      var pageUpRect = go_to_page_top.getBoundingClientRect();
+
+      go_to_page_top.onclick = function(){
+        // ANIMATION
+        var a = window.pageYOffset;
+        setInterval(function(){
+          if(a > 0){
+            if(a > 100){
+              a-=(a/100+100);
+            }else{
+              a-=100;
+            }
+
+            window.scrollTo(0,a);
+          }else{
+          }
+        },0);
+      };
+
+    }else if(isMobile){
+      go_to_page_top.style.display = "none";
+    }
+    else{
+      go_to_page_top.style.display = "none";
+    }
 }

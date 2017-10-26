@@ -62,7 +62,7 @@ function loadAllPetitions(){
   var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            AllPetitionsDataReceived(xmlHttp.responseText);
+          AllPetitionsDataReceived(xmlHttp.responseText);
     }
     var url = "https://petition.parliament.uk/petitions.json";
     xmlHttp.open("GET", url, true); // true for asynchronous
