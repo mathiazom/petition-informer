@@ -7,6 +7,7 @@ body{
   margin: 0;
 }
 
+/* LOADING */
 #loading{
   position: fixed;
   top: 50%;

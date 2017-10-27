@@ -167,7 +167,6 @@ function PetitionDataReceived(responseText){
       prog.style.width = "100%";
       prog.max = 100;
       var val = (country.signature_count/total_count)*100;
-      console.log(val);
       prog.value = val;
 
       // COUNTRY NAME CELL
@@ -207,12 +206,14 @@ function PetitionDataReceived(responseText){
       // ADD ROW TO TABLE
       signatures_by_country_table.appendChild(c_row);
       signatures_by_country_table.appendChild(prog_td);
-
-
     }
 
   // INSERT TABLE
   mainCont.appendChild(signatures_by_country_table);
+
+  document.getElementById('loading').style.display = "none";
+  document.getElementById('main_div').style.display = "block";
+
 
   // var view_map_button = document.getElementById("view_map_button");
   // view_map_button.onclick = function(){
